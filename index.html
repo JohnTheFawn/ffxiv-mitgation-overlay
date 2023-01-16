@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script type="text/javascript" src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      body{
+        margin: 0px;
+        /*font-family: sans-serif;*/
+        font-family: 'Lato', 'Source Han Sans', 'Meiryo UI', '맑은 고딕', sans-serif;
+        text-shadow: 0px 1px 1px rgba(0,0,0,0.5);
+        color: #bebebe;
+      }
+      .hidden{
+        display: none !important;
+      }
+
+      .toggleButton{
+        position: absolute;
+        cursor: pointer;
+        user-select: none;
+      }
+      #main{
+        padding-top: 15px;
+        padding-left: 15px;
+      }
+
+      #partyList{
+        background-color: rgba(0, 0, 0, 0.7);
+        display: inline-block;
+        padding: 8px;
+      }
+      .partyListRow:not(:last-child){
+        padding-bottom: 8px;
+        margin-bottom: 8px;
+        border-bottom: 1px solid #bebebe;
+      }
+
+      .characterCard{
+        display: inline-block;
+        user-select: none;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 325px;
+        vertical-align: top;
+      }
+      .characterCard:not(:last-child){
+        padding-right: 8px;
+        border-right: 1px solid #bebebe;
+      }
+      .characterCard:not(:first-child){
+        padding-left: 8px;
+      }
+      .characterCardHeader{
+        display: flex;
+        flex-direction: row;
+        border-bottom: 1px solid #c5deda;
+        padding: 0px 4px 4px 4px;
+        display: flex;
+      }
+      .rankingTable{
+        padding: 0px 8px;
+      }
+
+      .colorDataCenter{
+        color: #d1b3e7;
+      }
+      .colorCharacterName{
+        color: #c5deda;
+      }
+      .colorCharacterNameWorldDivider{
+        color: #B2B2B2;
+      }
+      .colorCharacterWorld{
+        color: #828282;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="main">
+    </div>
+  </body>
+  <footer>
+    <script>
+      const eventType = 'LogLine';
+      // 0: messageType?
+      //    00: message in chat box
+      //        ex: "Tonk Tonkers: hello", "There are no party members." "You change to paladin."
+      //    21: use action
+      //        ex: clicking a button on your hotbar such as Sentinel or Goring Blade or Arm's Length
+      //    26: gained an effect
+      //        ex: getting a buff like Rampart or Sentinel or Arm's Length
+      //    30: lose an effect
+      //        ex: Rampart or Sentinel or Arm's Length wears off
+      // 1: timestamp
+      // 2: actionType? (ActionEffect, Gauge, ChatLog, UpdateHp, StatusAdd, etc.)
+      // 3: Actor? Name
+      // 4: Actor? ID
+      // 5: Skill? ID
+      // 6: Skill? Name
+      // 7: Target? ID
+      // 8: Target? Name
+
+      const MESSAGE_TYPE_USE_ABILITY = '21'; // Character uses ability
+      const MESSAGE_TYPE_GAIN_EFFECT = '26'; // Character gains effect
+      const MESSAGE_TYPE_LOSE_EFFECT = '30'; // Character loses effect
+
+      const messageType = '21'; //
+      const actionType = '107CDF82'; // ?? maybe this is a skill id?
+      const messageTypes = [
+        MESSAGE_TYPE_USE_ABILITY
+        MESSAGE_TYPE_GAIN_EFFECT
+        MESSAGE_TYPE_LOSE_EFFECT
+      ];
+
+      addOverlayListener(eventType, (data) => {
+        if(messageTypes.includes(data.line.[0])){
+
+        }
+        console.log(eventType, data);
+      });
+      startOverlayEvents();
+    </script>
+  </footer>
+</html>
