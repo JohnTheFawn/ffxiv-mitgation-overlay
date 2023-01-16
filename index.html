@@ -12,6 +12,7 @@
   </body>
   <footer>
     <script>
+      // Contents vary based on messageType
       const eventType = 'LogLine';
       // 0: messageType?
       //    00: message in chat box
@@ -22,32 +23,75 @@
       //        ex: getting a buff like Rampart or Sentinel or Arm's Length
       //    30: lose an effect
       //        ex: Rampart or Sentinel or Arm's Length wears off
-      // 1: timestamp
-      // 2: actionType? (ActionEffect, Gauge, ChatLog, UpdateHp, StatusAdd, etc.)
-      // 3: Actor? Name
-      // 4: Actor? ID
-      // 5: Skill? ID
-      // 6: Skill? Name
-      // 7: Target? ID
-      // 8: Target? Name
+      //    ex: "21|2023-01-16T13:37:49.1410000-05:00|107CDF82|Tonk Tonkers|16|Bulwark|107CDF82|Tonk Tonkers|640F|4D8000|0|0|0|0|0|0|0|0|0|0|0|0|0|0|98900|98900|10000|10000|||-87.90|51.12|1.50|-1.54|98900|98900|10000|10000|||-87.90|51.12|1.50|-1.54|0000130D|0|1|81681bf499192d9b"
+      //        messageType: 21
+      //        timeStamp: 21|2023-01-16T13:37:49.1410000-05:00|107CDF82
+      //        actor?Id: 107CDF82
+      //        actor?Name: Tonk Tonkers
+      //        ???: 16
+      //        Skill Name: Bulwark
+      //        target?Id: 107CDF82
+      //        target?Name: Tonk Tonkers
+      //    ex: "26|2023-01-16T13:37:49.1410000-05:00|4D|Bulwark|10.00|107CDF82|Tonk Tonkers|107CDF82|Tonk Tonkers|00|98900|98900|b7ca294ce31f8663"
+      //        messageType: 21
+      //        timeStamp: 2023-01-16T13:37:49.1410000-05:00
+      //        actionId: 4D
+      //        actionName: Bulwark
+      //        duration (seconds, 2 decimal places): 10.00
+      //        actor?Id: 107CDF82
+      //        actor?Name: Tonk Tonkers
+      //        target?Id: 107CDF82
+      //        target?Name: Tonk Tonkers
+      //    ex: "30|2023-01-16T13:37:53.8630000-05:00|4D|Bulwark|0.00|107CDF82|Tonk Tonkers|107CDF82|Tonk Tonkers|00|98900|98900|ebfc01ff60fa6c8f"
+      //        messageType: 21
+      //        timeStamp: 2023-01-16T13:37:53.8630000-05:00
+      //        actionId: 4D
+      //        actionName: Bulwark
+      //        duration (seconds, 2 decimal places): 10.00
+      //        actor?Id: 107CDF82
+      //        actor?Name: Tonk Tonkers
+      //        target?Id: 107CDF82
+      //        target?Name: Tonk Tonkers
 
+      // We only want a few of the message types
+      // Character uses ability: Display something in the overlay to so it feels
+      //                         responsive
+      // Character gains effect: Communicate that the character has the effect
+      // Character loses effect: Communicate that the character no longer has
+      //                         the effect
       const MESSAGE_TYPE_USE_ABILITY = '21'; // Character uses ability
       const MESSAGE_TYPE_GAIN_EFFECT = '26'; // Character gains effect
       const MESSAGE_TYPE_LOSE_EFFECT = '30'; // Character loses effect
-
-      const messageType = '21'; //
-      const actionType = '107CDF82'; // ?? maybe this is a skill id?
       const messageTypes = [
-        MESSAGE_TYPE_USE_ABILITY
-        MESSAGE_TYPE_GAIN_EFFECT
+        MESSAGE_TYPE_USE_ABILITY,
+        MESSAGE_TYPE_GAIN_EFFECT,
         MESSAGE_TYPE_LOSE_EFFECT
       ];
 
-      addOverlayListener(eventType, (data) => {
-        if(messageTypes.includes(data.line.[0])){
+      // We will need filter down to just the mits
+      const ACTION_ID_ARMS_LENGTH = '4B9';
+      // Gun Breaker
+      // Dark Knight
+      // Paladin
+      const ACTION_ID_PALADIN_BULWARK = '4D';
+      const ACTION_ID_PALADIN_DIVINE_VEIL = '552';
+      const ACTION_ID_PALADIN_HALLOWED_GROUND = '52';
+      const ACTION_ID_PALADIN_RAMPART = '4A7';
+      const ACTION_ID_PALADIN_SENTINEL = '4A';
+      // Warrior
+      const actionIds = [
+        ACTION_ID_ARMS_LENGTH,
+        ACTION_ID_PALADIN_BULWARK,
+        ACTION_ID_PALADIN_DIVINE_VEIL,
+        ACTION_ID_PALADIN_HALLOWED_GROUND,
+        ACTION_ID_PALADIN_RAMPART,
+        ACTION_ID_PALADIN_SENTINEL
+      ];
 
+      addOverlayListener(eventType, (data) => {
+        if(messageTypes.includes(data.line[0])){
+          console.log(data);
         }
-        console.log(eventType, data);
       });
       startOverlayEvents();
     </script>
