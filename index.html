@@ -181,6 +181,7 @@
           }
         });
       }
+
       function createProgressBar(id, duration){
         const progressBar = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         //const progressBarId = 'progressBar-' + effectName.replace(/ /g, '_');
@@ -221,7 +222,18 @@
         return progressBar;
       }
 
-      document.getElementById('svg').appendChild(createProgressBar('arms_length', 6));
+      function sanitizeEffect(effect){
+        let res = effect.toLowerCase();
+        res = res.replace(/ /g, '_');
+        return res.replace(/\W/g, '');
+      }
+
+      document.getElementById('svg').appendChild(
+        createProgressBar(
+          sanitizeEffect('Arm\'s Length'),
+          6
+        )
+      );
 
       // TODO: add a buffer here so it isn't doing this 100s of times while a
       //       user resizes the window
