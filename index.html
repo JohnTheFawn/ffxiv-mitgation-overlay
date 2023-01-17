@@ -12,7 +12,7 @@
         width: 100vw;
         overflow: hidden;
         text-align: right;
-        opacity: .6;
+        opacity: .8;
       }
       .progressBarRed{
         filter: invert(12%) sepia(73%) saturate(4547%) hue-rotate(354deg) brightness(95%) contrast(119%);
@@ -232,7 +232,6 @@
         svg.setAttribute('viewBox', '0 0 60 266');
 
         const progressBar = document.createElementNS(ns, 'path');
-        //const progressBarId = 'progressBar-' + effectName.replace(/ /g, '_');
         progressBar.setAttribute('id', progressBarId);
         progressBar.setAttribute('vector-effect', 'non-scaling-stroke');
         progressBar.setAttribute('fill', 'none');
@@ -241,9 +240,9 @@
         progressBar.setAttribute('stroke-linecap', 'round');
         progressBar.setAttribute('stroke-dasharray', dashSize);
         progressBar.setAttribute('stroke-dashoffset', 25);
-        // 25 seems to make it start more immediately there is some offset here
+        // 25 seems to make it start more immediately, there is some offset here
         // that I can't figure out, I am sure a math whiz could run loops around
-        // my approach to animating a bezier curve
+        // my approach to animating a curve
         // Note: this doesn't scale up too well, at like 600px+ it still hangs
         //       for a moment
         progressBar.setAttribute('d', "M 30.00,246.00 C 0.00,186.00 0.00,70.00 30.00,10.00");
