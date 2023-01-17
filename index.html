@@ -223,9 +223,7 @@
       }
 
       function sanitizeEffect(effect){
-        let res = effect.toLowerCase();
-        res = res.replace(/ /g, '_');
-        return res.replace(/\W/g, '');
+        return effect.toLowerCase().replace(/\W/g, '');
       }
 
       document.getElementById('svg').appendChild(
