@@ -138,6 +138,13 @@
       const ACTION_ID_PALADIN_HALLOWED_GROUND = '52';
       const ACTION_ID_PALADIN_SENTINEL = '4A';
       // Warrior
+      const ACTION_ID_BLOODWHETTING = 'A76';
+      const ACTION_ID_STEM_THE_FLOW = 'A77'; // 4s mit from bloodwhetting
+      const ACTION_ID_STEM_THE_TIDE = 'A78'; // shield from bloodwhetting
+      const ACTION_ID_VENGEANCE = '59'; // thorns
+      const ACTION_ID_VULNERABILITY_DOWN = '390'; // mit from vengeance
+      const ACTION_ID_SHAKE_IT_OFF = '581'; // shield
+      const ACTION_ID_SHAKE_IT_OFF_OVER_TIME = '83C'; // healing from shake it off
       // All Mitigation Action IDs
       const actionIds = [
         ACTION_ID_ARMS_LENGTH,
@@ -145,7 +152,10 @@
         //ACTION_ID_PALADIN_DIVINE_VEIL,
         ACTION_ID_PALADIN_HALLOWED_GROUND,
         ACTION_ID_PALADIN_RAMPART,
-        ACTION_ID_PALADIN_SENTINEL
+        ACTION_ID_PALADIN_SENTINEL,
+        ACTION_ID_BLOODWHETTING,
+        ACTION_ID_STEM_THE_FLOW,
+        ACTION_ID_VULNERABILITY_DOWN
       ];
 
       const ACTION_ID_COLOR_MAP = {};
@@ -154,6 +164,10 @@
       ACTION_ID_COLOR_MAP[ACTION_ID_PALADIN_BULWARK] = '#91edff';
       ACTION_ID_COLOR_MAP[ACTION_ID_PALADIN_HALLOWED_GROUND] = '#f4e690';
       ACTION_ID_COLOR_MAP[ACTION_ID_PALADIN_SENTINEL] = '#0051ab';
+      ACTION_ID_COLOR_MAP[ACTION_ID_BLOODWHETTING] = '#dc4e24';
+      ACTION_ID_COLOR_MAP[ACTION_ID_STEM_THE_FLOW] = '#f4e690';
+      ACTION_ID_COLOR_MAP[ACTION_ID_VENGEANCE] = '#9e2eb0';
+      ACTION_ID_COLOR_MAP[ACTION_ID_VULNERABILITY_DOWN] = '#444444';
 
       addOverlayListener(eventType, (data) => {
         const messageType = data.line[0];
