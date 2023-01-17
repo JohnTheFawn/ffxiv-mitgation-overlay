@@ -29,12 +29,12 @@
   </head>
   <body>
     <div id="main">
+      <!--
       <svg id="svg"
         xmlns="http://www.w3.org/2000/svg"
         height="100%"
         viewBox="0 0 60 266"
       >
-        <!--
         <path
           id="path"
           vector-effect="non-scaling-stroke"
@@ -59,14 +59,15 @@
              C 0.00,186.00 0.00,70.00 30.00,10.00"
           >
         </path>
-      -->
       </svg>
+    -->
     </div>
   </body>
   <footer>
     <script>
+      const main = document.getElementById('main');
       // Will be used to hold our progress bars for easy access
-      const progressBars = [document.getElementById('loader1')];
+      const progressBars = [];
 
       // Contents vary based on messageType
       const eventType = 'LogLine';
@@ -157,6 +158,9 @@
             case MESSAGE_TYPE_GAIN_EFFECT:
               console.log('Gained an effect');
               console.log(data);
+              const actionId = data.line[2];
+              const duration = data.line[4];
+              createProgressBar(actionId, duration)
               break;
             case MESSAGE_TYPE_LOSE_EFFECT:
               console.log('Lost an effect');
@@ -172,7 +176,7 @@
       }
 
       function resizeProgressBars(){
-        const dashSize = getProgressBarDashSize();
+        let dashSize = getProgressBarDashSize();
         progressBars.forEach(progressBar => {
           if(progressBar){
             const currentPercentage = progressBar.getAttribute('stroke-dashoffset') / progressBar.getAttribute('stroke-dasharray');
@@ -183,12 +187,19 @@
       }
 
       function createProgressBar(id, duration){
-        const progressBar = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        //const progressBarId = 'progressBar-' + effectName.replace(/ /g, '_');
-        const progressBarId = 'loader2';
+        const svgId = 'svg-' + id;
+        const progressBarId = 'progressBar-' + id;
+        const animationId = 'animation-' + id;
         const dashSize = getProgressBarDashSize();
 
-        progressBar.setAttribute('id', id);
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('id', svgId);
+        svg.setAttribute('height', '100%');
+        svg.setAttribute('viewBox', '0 0 60 266');
+
+        const progressBar = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        //const progressBarId = 'progressBar-' + effectName.replace(/ /g, '_');
+        progressBar.setAttribute('id', progressBarId);
         progressBar.setAttribute('vector-effect', 'non-scaling-stroke');
         progressBar.setAttribute('fill', 'none');
         progressBar.setAttribute('stroke', 'blue');
@@ -202,8 +213,11 @@
         // Note: this doesn't scale up too well, at like 600px+ it still hangs
         //       for a moment
         progressBar.setAttribute('d', "M 30.00,246.00 C 0.00,186.00 0.00,70.00 30.00,10.00");
+        svg.appendChild(progressBar);
+        svg.style.margin = '0 0 0 -' + (dashSize / 15) + 'px';
 
         const animation = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+        animation.setAttribute('id', animationId);
         animation.setAttribute('attributeName', 'stroke-dashoffset');
         animation.setAttribute('from', 25);
         animation.setAttribute('to', dashSize);
@@ -213,25 +227,23 @@
 
         progressBars.push(progressBar);
 
+        // TODO this should be replaced? work with? MESSAGE_TYPE_LOSE_EFFECT
+        // Remove bar if timer expires
         setTimeout(function(){
           if(progressBar){
-            progressBar.parentNode.removeChild(progressBar);
+            progressBars.forEach((existingProgressBar, index) => {
+              if(existingProgressBar.getAttribute('id') === progressBarId){
+                progressBars.splice(index, 1);
+              }
+            });
+            progressBar.parentNode.remove();
           }
         }, duration * 1000);
 
+        main.appendChild(svg);
+
         return progressBar;
       }
-
-      function sanitizeEffect(effect){
-        return effect.toLowerCase().replace(/\W/g, '');
-      }
-
-      document.getElementById('svg').appendChild(
-        createProgressBar(
-          sanitizeEffect('Arm\'s Length'),
-          6
-        )
-      );
 
       // TODO: add a buffer here so it isn't doing this 100s of times while a
       //       user resizes the window
