@@ -126,22 +126,22 @@
         MESSAGE_TYPE_LOSE_EFFECT
       ];
 
-      // We will need filter down to just the mits
+      // Tank
       const ACTION_ID_ARMS_LENGTH = '4B9';
+      const ACTION_ID_PALADIN_RAMPART = '4A7';
       // Gun Breaker
       // Dark Knight
       // Paladin
       const ACTION_ID_PALADIN_BULWARK = '4D';
-      const ACTION_ID_PALADIN_DIVINE_VEIL = '552';
+      const ACTION_ID_PALADIN_DIVINE_VEIL = '552'; // shield
       const ACTION_ID_PALADIN_HALLOWED_GROUND = '52';
-      const ACTION_ID_PALADIN_RAMPART = '4A7';
       const ACTION_ID_PALADIN_SENTINEL = '4A';
       // Warrior
       // All Mitigation Action IDs
       const actionIds = [
         ACTION_ID_ARMS_LENGTH,
         ACTION_ID_PALADIN_BULWARK,
-        ACTION_ID_PALADIN_DIVINE_VEIL,
+        //ACTION_ID_PALADIN_DIVINE_VEIL,
         ACTION_ID_PALADIN_HALLOWED_GROUND,
         ACTION_ID_PALADIN_RAMPART,
         ACTION_ID_PALADIN_SENTINEL
@@ -159,8 +159,10 @@
               console.log('Gained an effect');
               console.log(data);
               const actionId = data.line[2];
-              const duration = data.line[4];
-              createProgressBar(actionId, duration)
+              if(actionIds.includes(actionId)){
+                const duration = data.line[4];
+                createProgressBar(actionId, duration);
+              }
               break;
             case MESSAGE_TYPE_LOSE_EFFECT:
               console.log('Lost an effect');
