@@ -11,6 +11,7 @@
         height: 100vh;
         width: 100vw;
         overflow: hidden;
+        text-align: right;
       }
       .progressBarRed{
         filter: invert(12%) sepia(73%) saturate(4547%) hue-rotate(354deg) brightness(95%) contrast(119%);
@@ -28,7 +29,12 @@
   </head>
   <body>
     <div id="main">
-      <svg xmlns="http://www.w3.org/2000/svg" height="100%" viewBox="0 0 60 266">
+      <svg id="svg"
+        xmlns="http://www.w3.org/2000/svg"
+        height="100%"
+        viewBox="0 0 60 266"
+      >
+        <!--
         <path
           id="path"
           vector-effect="non-scaling-stroke"
@@ -48,16 +54,18 @@
           stroke-width="10"
           stroke-linecap="round"
           stroke-dasharray="758"
-          stroke-dashoffset="250"
+          stroke-dashoffset="758"
           d="M 30.00,246.00
              C 0.00,186.00 0.00,70.00 30.00,10.00"
           >
         </path>
+      -->
       </svg>
     </div>
   </body>
   <footer>
     <script>
+      // Will be used to hold our progress bars for easy access
       const progressBars = [document.getElementById('loader1')];
 
       // Contents vary based on messageType
@@ -159,19 +167,68 @@
       });
       startOverlayEvents();
 
-      function resizeBars(progressBars){
-        progressBars.forEach(progressBar => {
-          var positionInfo = progressBar.getBoundingClientRect();
-          var dashSize = Math.round(positionInfo.height);
-          progressBar.style.strokeDasharray = dashSize;
-          progressBar.style.strokeDashoffset = dashSize / 2;
-        });
+      function getProgressBarDashSize(){
+        return Math.round(document.getElementById('main').getBoundingClientRect().height);
       }
 
+      function resizeProgressBars(){
+        const dashSize = getProgressBarDashSize();
+        progressBars.forEach(progressBar => {
+          if(progressBar){
+            const currentPercentage = progressBar.getAttribute('stroke-dashoffset') / progressBar.getAttribute('stroke-dasharray');
+            progressBar.setAttribute('stroke-dasharray', dashSize);
+            progressBar.setAttribute('stroke-dashoffset', dashSize * currentPercentage);
+          }
+        });
+      }
+      function createProgressBar(id, duration){
+        const progressBar = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        //const progressBarId = 'progressBar-' + effectName.replace(/ /g, '_');
+        const progressBarId = 'loader2';
+        const dashSize = getProgressBarDashSize();
+
+        progressBar.setAttribute('id', id);
+        progressBar.setAttribute('vector-effect', 'non-scaling-stroke');
+        progressBar.setAttribute('fill', 'none');
+        progressBar.setAttribute('stroke', 'blue');
+        progressBar.setAttribute('stroke-width', '10');
+        progressBar.setAttribute('stroke-linecap', 'round');
+        progressBar.setAttribute('stroke-dasharray', dashSize);
+        progressBar.setAttribute('stroke-dashoffset', 25);
+        // 25 seems to make it start more immediately there is some offset here
+        // that I can't figure out, I am sure a math whiz could run loops around
+        // my approach to animating a bezier curve
+        // Note: this doesn't scale up too well, at like 600px+ it still hangs
+        //       for a moment
+        progressBar.setAttribute('d', "M 30.00,246.00 C 0.00,186.00 0.00,70.00 30.00,10.00");
+
+        const animation = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+        animation.setAttribute('attributeName', 'stroke-dashoffset');
+        animation.setAttribute('from', 25);
+        animation.setAttribute('to', dashSize);
+        animation.setAttribute('dur', duration + 's');
+        animation.setAttribute('fill', 'freeze');
+        progressBar.appendChild(animation);
+
+        progressBars.push(progressBar);
+
+        setTimeout(function(){
+          if(progressBar){
+            progressBar.parentNode.removeChild(progressBar);
+          }
+        }, duration * 1000);
+
+        return progressBar;
+      }
+
+      document.getElementById('svg').appendChild(createProgressBar('arms_length', 6));
+
+      // TODO: add a buffer here so it isn't doing this 100s of times while a
+      //       user resizes the window
       window.addEventListener('resize', () => {
-        resizeBars(progressBars);
+        resizeProgressBars();
       });
-      resizeBars(progressBars);
+      resizeProgressBars();
     </script>
   </footer>
 </html>
