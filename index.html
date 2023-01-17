@@ -12,6 +12,7 @@
         width: 100vw;
         overflow: hidden;
         text-align: right;
+        opacity: .6;
       }
       .progressBarRed{
         filter: invert(12%) sepia(73%) saturate(4547%) hue-rotate(354deg) brightness(95%) contrast(119%);
@@ -147,6 +148,13 @@
         ACTION_ID_PALADIN_SENTINEL
       ];
 
+      const ACTION_ID_COLOR_MAP = {};
+      ACTION_ID_COLOR_MAP[ACTION_ID_ARMS_LENGTH] = '#ba7858';
+      ACTION_ID_COLOR_MAP[ACTION_ID_PALADIN_RAMPART] = '#7098ef';
+      ACTION_ID_COLOR_MAP[ACTION_ID_PALADIN_BULWARK] = '#91edff';
+      ACTION_ID_COLOR_MAP[ACTION_ID_PALADIN_HALLOWED_GROUND] = '#f4e690';
+      ACTION_ID_COLOR_MAP[ACTION_ID_PALADIN_SENTINEL] = '#0051ab';
+
       addOverlayListener(eventType, (data) => {
         const messageType = data.line[0];
         if(messageTypes.includes(messageType)){
@@ -193,18 +201,19 @@
         const progressBarId = 'progressBar-' + id;
         const animationId = 'animation-' + id;
         const dashSize = getProgressBarDashSize();
+        const ns = 'http://www.w3.org/2000/svg';
 
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        const svg = document.createElementNS(ns, 'svg');
         svg.setAttribute('id', svgId);
         svg.setAttribute('height', '100%');
         svg.setAttribute('viewBox', '0 0 60 266');
 
-        const progressBar = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        const progressBar = document.createElementNS(ns, 'path');
         //const progressBarId = 'progressBar-' + effectName.replace(/ /g, '_');
         progressBar.setAttribute('id', progressBarId);
         progressBar.setAttribute('vector-effect', 'non-scaling-stroke');
         progressBar.setAttribute('fill', 'none');
-        progressBar.setAttribute('stroke', 'blue');
+        progressBar.setAttribute('stroke', ACTION_ID_COLOR_MAP[id] ? ACTION_ID_COLOR_MAP[id] : 'blue');
         progressBar.setAttribute('stroke-width', '10');
         progressBar.setAttribute('stroke-linecap', 'round');
         progressBar.setAttribute('stroke-dasharray', dashSize);
@@ -218,7 +227,7 @@
         svg.appendChild(progressBar);
         svg.style.margin = '0 0 0 -' + (dashSize / 15) + 'px';
 
-        const animation = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+        const animation = document.createElementNS(ns, 'animate');
         animation.setAttribute('id', animationId);
         animation.setAttribute('attributeName', 'stroke-dashoffset');
         animation.setAttribute('from', 25);
