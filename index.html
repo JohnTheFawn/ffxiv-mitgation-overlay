@@ -240,7 +240,12 @@
           }
         }, duration * 1000);
 
-        main.appendChild(svg);
+        if(main.children[0]){
+          main.insertBefore(svg, main.children[0]);
+        }
+        else{
+          main.appendChild(svg);
+        }
 
         return progressBar;
       }
