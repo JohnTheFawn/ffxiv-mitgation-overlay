@@ -210,7 +210,7 @@
               const actionId = data.line[2];
               if(data.line[8] === characterName && actionIds.includes(actionId)){
                 const duration = data.line[4];
-                createProgressBar(actionId, 100);
+                createProgressBar(actionId, duration);
               }
               break;
             case MESSAGE_TYPE_LOSE_EFFECT:
