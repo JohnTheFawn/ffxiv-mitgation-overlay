@@ -54,6 +54,8 @@
   </body>
   <footer>
     <script>
+      const debug = false;
+      const characterName = 'Tonk Tonkers';
       const main = document.getElementById('main');
       // Will be used to hold our progress bars for easy access
       const progressBars = [];
@@ -76,8 +78,8 @@
       //        actor?Name: Tonk Tonkers
       //        ???: 16
       //        Skill Name: Bulwark
-      //        target?Id: 107CDF82
-      //        target?Name: Tonk Tonkers
+      //        targetId: 107CDF82
+      //        targetName: Tonk Tonkers
       //    ex: "26|2023-01-16T13:37:49.1410000-05:00|4D|Bulwark|10.00|107CDF82|Tonk Tonkers|107CDF82|Tonk Tonkers|00|98900|98900|b7ca294ce31f8663"
       //        messageType: 26
       //        timeStamp: 2023-01-16T13:37:49.1410000-05:00
@@ -171,21 +173,27 @@
         if(messageTypes.includes(messageType)){
           switch(messageType){
             case MESSAGE_TYPE_USE_ABILITY:
-              console.log('Used an ability');
-              console.log(data);
+              if(debug){
+                console.log('Used an ability');
+                console.log(data);
+              }
               break;
             case MESSAGE_TYPE_GAIN_EFFECT:
-              console.log('Gained an effect');
-              console.log(data);
+              if(debug){
+                console.log('Gained an effect');
+                console.log(data);
+              }
               const actionId = data.line[2];
-              if(actionIds.includes(actionId)){
+              if(data.line[8] === characterName && actionIds.includes(actionId)){
                 const duration = data.line[4];
                 createProgressBar(actionId, duration);
               }
               break;
             case MESSAGE_TYPE_LOSE_EFFECT:
-              console.log('Lost an effect');
-              console.log(data);
+              if(debug){
+                console.log('Lost an effect');
+                console.log(data);
+              }
               break;
           }
         }
@@ -217,7 +225,7 @@
         const svg = document.createElementNS(ns, 'svg');
         svg.setAttribute('id', svgId);
         svg.setAttribute('height', '100%');
-        svg.setAttribute('viewBox', '0 0 60 266');
+        svg.setAttribute('viewBox', '0 0 70 266');
 
         const progressBar = document.createElementNS(ns, 'path');
         progressBar.setAttribute('id', progressBarId);
@@ -228,12 +236,13 @@
         progressBar.setAttribute('stroke-linecap', 'round');
         progressBar.setAttribute('stroke-dasharray', dashSize);
         progressBar.setAttribute('stroke-dashoffset', 25);
+        progressBar.setAttribute('filter', 'drop-shadow(0 0 5px #000000)');
         // 25 seems to make it start more immediately, there is some offset here
         // that I can't figure out, I am sure a math whiz could run loops around
         // my approach to animating a curve
         // Note: this doesn't scale up too well, at like 600px+ it still hangs
         //       for a moment
-        progressBar.setAttribute('d', "M 30.00,246.00 C 0.00,186.00 0.00,70.00 30.00,10.00");
+        progressBar.setAttribute('d', "M 35.00,246.00 C 10.00,186.00 10.00,70.00 35.00,10.00");
         svg.appendChild(progressBar);
         svg.style.margin = '0 0 0 -' + (dashSize / 15) + 'px';
 
