@@ -6,12 +6,14 @@
     <style>
       body{
         margin: 0px;
+        overflow: hidden;
       }
       #main{
         height: 100vh;
         width: 100vw;
-        overflow: hidden;
         text-align: right;
+        padding-right: 20px;
+        padding-bottom: 20px;
         opacity: .8;
       }
     </style>
@@ -154,7 +156,20 @@
         ACTION_ID_WARRIOR_VULNERABILITY_DOWN
       ];
 
-      const ACTION_ID_COLOR_MAP = {};
+      const ACTION_ID_COLOR_MAP = {
+        [ACTION_ID_ARMS_LENGTH]: '#ba7858',
+        [ACTION_ID_RAMPART]: '#7098ef',
+        [ACTION_ID_PALADIN_BULWARK]: '#91edff',
+        [ACTION_ID_PALADIN_HALLOWED_GROUND]: '#f4e690',
+        [ACTION_ID_PALADIN_HOLY_SHELTRON]: '#f17c71',
+        [ACTION_ID_PALADIN_KNIGHTS_RESOLVE]: '#0a3c3d',
+        [ACTION_ID_PALADIN_SENTINEL]: '#0051ab',
+        [ACTION_ID_WARRIOR_BLOODWHETTING]: '#dc4e24',
+        [ACTION_ID_WARRIOR_HOLMGANG]: '#dec5cd',
+        [ACTION_ID_WARRIOR_STEM_THE_FLOW]: '#f4e690',
+        [ACTION_ID_WARRIOR_VENGEANCE]: '#9e2eb0',
+        [ACTION_ID_WARRIOR_VULNERABILITY_DOWN]: '#444444'
+      };
       ACTION_ID_COLOR_MAP[ACTION_ID_ARMS_LENGTH] = '#ba7858';
       ACTION_ID_COLOR_MAP[ACTION_ID_RAMPART] = '#7098ef';
       ACTION_ID_COLOR_MAP[ACTION_ID_PALADIN_BULWARK] = '#91edff';
@@ -167,6 +182,15 @@
       ACTION_ID_COLOR_MAP[ACTION_ID_WARRIOR_STEM_THE_FLOW] = '#f4e690';
       ACTION_ID_COLOR_MAP[ACTION_ID_WARRIOR_VENGEANCE] = '#9e2eb0';
       ACTION_ID_COLOR_MAP[ACTION_ID_WARRIOR_VULNERABILITY_DOWN] = '#444444';
+
+      const ACTION_ID_ICON_MAP = {
+        [ACTION_ID_ARMS_LENGTH]: 'assets/icons/tank/arms_length.png',
+        [ACTION_ID_RAMPART]: 'assets/icons/tank/rampart.png',
+        [ACTION_ID_PALADIN_BULWARK]: 'assets/icons/pld/enhanced_sheltron.png',
+        [ACTION_ID_PALADIN_HALLOWED_GROUND]: 'assets/icons/pld/hallowed_ground.png',
+        [ACTION_ID_PALADIN_HOLY_SHELTRON]: 'assets/icons/pld/holy_sheltron.png',
+        [ACTION_ID_PALADIN_SENTINEL]: 'assets/icons/pld/sentinel.png'
+      };
 
       addOverlayListener(eventType, (data) => {
         const messageType = data.line[0];
@@ -186,7 +210,7 @@
               const actionId = data.line[2];
               if(data.line[8] === characterName && actionIds.includes(actionId)){
                 const duration = data.line[4];
-                createProgressBar(actionId, duration);
+                createProgressBar(actionId, 100);
               }
               break;
             case MESSAGE_TYPE_LOSE_EFFECT:
@@ -222,16 +246,21 @@
         const dashSize = getProgressBarDashSize();
         const ns = 'http://www.w3.org/2000/svg';
 
+        const wrapper = document.createElement('div');
+        wrapper.style.height = '100%';
+        wrapper.style.display = 'inline-block';
+
         const svg = document.createElementNS(ns, 'svg');
         svg.setAttribute('id', svgId);
         svg.setAttribute('height', '100%');
         svg.setAttribute('viewBox', '0 0 70 266');
+        svg.style.margin = ('0 30px 30px 0');
 
         const progressBar = document.createElementNS(ns, 'path');
         progressBar.setAttribute('id', progressBarId);
         progressBar.setAttribute('vector-effect', 'non-scaling-stroke');
         progressBar.setAttribute('fill', 'none');
-        progressBar.setAttribute('stroke', ACTION_ID_COLOR_MAP[id] ? ACTION_ID_COLOR_MAP[id] : 'blue');
+        progressBar.setAttribute('stroke', ACTION_ID_COLOR_MAP[id] ? ACTION_ID_COLOR_MAP[id] : '#ffffff');
         progressBar.setAttribute('stroke-width', '10');
         progressBar.setAttribute('stroke-linecap', 'round');
         progressBar.setAttribute('stroke-dasharray', dashSize);
@@ -244,7 +273,7 @@
         //       for a moment
         progressBar.setAttribute('d', "M 35.00,246.00 C 10.00,186.00 10.00,70.00 35.00,10.00");
         svg.appendChild(progressBar);
-        svg.style.margin = '0 0 0 -' + (dashSize / 15) + 'px';
+        wrapper.style.margin = '0 0 0 -' + ((dashSize * (70/260)) + 5) + 'px';
 
         const animation = document.createElementNS(ns, 'animate');
         animation.setAttribute('id', animationId);
@@ -257,6 +286,21 @@
 
         progressBars.push(progressBar);
 
+        if(ACTION_ID_ICON_MAP[id]){
+          const icon = document.createElement('img');
+          icon.src = ACTION_ID_ICON_MAP[id];
+          icon.style.height = '30px';
+          icon.style.width = '30px';
+          icon.style.position = 'relative';
+          icon.style.bottom = 'calc(7% + 20px)';
+          icon.style.left = 'calc(50%)'; // not lined up in browser but is in ACT
+          icon.style.opacity = '.9';
+          icon.style.filter = 'drop-shadow(0 0 5px #000000)';
+          wrapper.appendChild(icon);
+        }
+
+        wrapper.appendChild(svg);
+
         // TODO this should be replaced? work with? MESSAGE_TYPE_LOSE_EFFECT
         // Remove bar if timer expires
         setTimeout(function(){
@@ -266,15 +310,15 @@
                 progressBars.splice(index, 1);
               }
             });
-            progressBar.parentNode.remove();
+            svg.parentNode.remove();
           }
         }, duration * 1000);
 
         if(main.children[0]){
-          main.insertBefore(svg, main.children[0]);
+          main.insertBefore(wrapper, main.children[0]);
         }
         else{
-          main.appendChild(svg);
+          main.appendChild(wrapper);
         }
 
         return progressBar;
