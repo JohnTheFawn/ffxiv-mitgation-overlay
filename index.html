@@ -57,6 +57,9 @@
   <footer>
     <script>
       const debug = false;
+      if(debug){
+        console.log('debug', debug);
+      }
       const characterName = 'Tonk Tonkers';
       const main = document.getElementById('main');
       // Will be used to hold our progress bars for easy access
@@ -124,6 +127,13 @@
       const ACTION_ID_RAMPART = '4A7';
       // Gun Breaker
       // Dark Knight
+      const ACTION_ID_DARK_KNIGHT_DARK_MIND = '2EA';
+      const ACTION_ID_DARK_KNIGHT_DARK_MISSIONARY = '766';
+      const ACTION_ID_DARK_KNIGHT_LIVING_DEAD = '32A';
+      const ACTION_ID_DARK_KNIGHT_OBLATION = 'A7A';
+      const ACTION_ID_DARK_KNIGHT_SHADOW_WALL = '2EB';
+      const ACTION_ID_DARK_KNIGHT_UNDEAD_REBIRTH = null; // TODO find something to trigger this
+      const ACTION_ID_DARK_KNIGHT_WALKING_DEAD = null; // TODO find something to trigger this
       // Paladin
       const ACTION_ID_PALADIN_BULWARK = '4D';
       const ACTION_ID_PALADIN_DIVINE_VEIL = '552'; // shield
@@ -144,6 +154,13 @@
       const actionIds = [
         ACTION_ID_ARMS_LENGTH,
         ACTION_ID_RAMPART,
+        ACTION_ID_DARK_KNIGHT_DARK_MIND,
+        ACTION_ID_DARK_KNIGHT_DARK_MISSIONARY,
+        ACTION_ID_DARK_KNIGHT_LIVING_DEAD,
+        ACTION_ID_DARK_KNIGHT_OBLATION,
+        ACTION_ID_DARK_KNIGHT_SHADOW_WALL,
+        //ACTION_ID_DARK_KNIGHT_UNDEAD_REBIRTH,
+        //ACTION_ID_DARK_KNIGHT_WALKING_DEAD,
         ACTION_ID_PALADIN_BULWARK,
         //ACTION_ID_PALADIN_DIVINE_VEIL,
         ACTION_ID_PALADIN_HALLOWED_GROUND,
@@ -159,6 +176,11 @@
       const ACTION_ID_COLOR_MAP = {
         [ACTION_ID_ARMS_LENGTH]: '#ba7858',
         [ACTION_ID_RAMPART]: '#7098ef',
+        [ACTION_ID_DARK_KNIGHT_DARK_MIND]: '#e4ba4f',
+        [ACTION_ID_DARK_KNIGHT_DARK_MISSIONARY]: '#e46213',
+        [ACTION_ID_DARK_KNIGHT_LIVING_DEAD]: '#ed2e37',
+        [ACTION_ID_DARK_KNIGHT_OBLATION]: '#ff19ff',
+        [ACTION_ID_DARK_KNIGHT_SHADOW_WALL]: '#7f2b8a',
         [ACTION_ID_PALADIN_BULWARK]: '#91edff',
         [ACTION_ID_PALADIN_HALLOWED_GROUND]: '#f4e690',
         [ACTION_ID_PALADIN_HOLY_SHELTRON]: '#f17c71',
@@ -174,6 +196,11 @@
       const ACTION_ID_ICON_MAP = {
         [ACTION_ID_ARMS_LENGTH]: 'assets/icons/tank/arms_length.png',
         [ACTION_ID_RAMPART]: 'assets/icons/tank/rampart.png',
+        [ACTION_ID_DARK_KNIGHT_DARK_MIND]: 'assets/icons/drk/dark_mind.png',
+        [ACTION_ID_DARK_KNIGHT_DARK_MISSIONARY]: 'assets/icons/drk/dark_missionary.png',
+        [ACTION_ID_DARK_KNIGHT_LIVING_DEAD]: 'assets/icons/drk/living_dead.png',
+        [ACTION_ID_DARK_KNIGHT_OBLATION]: 'assets/icons/drk/oblation.png',
+        [ACTION_ID_DARK_KNIGHT_SHADOW_WALL]: 'assets/icons/drk/shadow_wall.png',
         [ACTION_ID_PALADIN_BULWARK]: 'assets/icons/pld/enhanced_sheltron.png',
         [ACTION_ID_PALADIN_HALLOWED_GROUND]: 'assets/icons/pld/hallowed_ground.png',
         [ACTION_ID_PALADIN_HOLY_SHELTRON]: 'assets/icons/pld/holy_sheltron.png',
@@ -285,7 +312,7 @@
           icon.style.position = 'relative';
           icon.style.bottom = 'calc(7% + 20px)';
           icon.style.left = 'calc(50%)'; // not lined up in browser but is in ACT
-          icon.style.opacity = '.9';
+          //icon.style.opacity = '.9';
           icon.style.filter = 'drop-shadow(0 0 5px #000000)';
           wrapper.appendChild(icon);
         }
