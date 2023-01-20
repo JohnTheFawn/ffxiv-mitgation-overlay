@@ -7,7 +7,7 @@
       body{
         margin: 0px;
         overflow: hidden;
-        font-family: Raleway,sans-serif;
+        font-family: Lucida Sans Unicode,sans-serif;
       }
       #main{
         height: 100vh;
@@ -292,8 +292,8 @@
         wrapper.style.height = '100%';
         wrapper.style.display = 'inline-block';
         wrapper.style.position = 'relative';
-        wrapper.style.paddingRight = '25px';
-        wrapper.style.paddingBottom = '25px';
+        wrapper.style.paddingRight = '30px';
+        wrapper.style.paddingBottom = '30px';
         wrapper.style.boxSizing = 'border-box';
 
         const svg = document.createElementNS(ns, 'svg');
@@ -309,13 +309,13 @@
         progressBar.setAttribute('stroke-width', '10');
         progressBar.setAttribute('stroke-linecap', 'round');
         progressBar.setAttribute('stroke-dasharray', dashSize);
-        progressBar.setAttribute('stroke-dashoffset', 25);
-        progressBar.setAttribute('filter', 'drop-shadow(0 0 5px #000000)');
         // 25 seems to make it start more immediately, there is some offset here
         // that I can't figure out, I am sure a math whiz could run loops around
         // my approach to animating a curve
         // Note: this doesn't scale up too well, at like 600px+ it still hangs
         //       for a moment
+        progressBar.setAttribute('stroke-dashoffset', 60);
+        progressBar.setAttribute('filter', 'drop-shadow(0 0 5px #000000)');
         progressBar.setAttribute('d', "M 35.00,246.00 C 10.00,186.00 10.00,70.00 35.00,10.00");
         svg.appendChild(progressBar);
         wrapper.style.margin = '0 0 0 -' + ((dashSize * (70/260)) - 25) + 'px';
@@ -323,7 +323,7 @@
         const animation = document.createElementNS(ns, 'animate');
         animation.setAttribute('id', animationId);
         animation.setAttribute('attributeName', 'stroke-dashoffset');
-        animation.setAttribute('from', 25);
+        animation.setAttribute('from', 60);
         animation.setAttribute('to', dashSize);
         animation.setAttribute('dur', duration + 's');
         animation.setAttribute('fill', 'freeze');
@@ -334,8 +334,8 @@
         const iconWrapper = document.createElement('div');
         iconWrapper.style.display = 'inline-block';
         iconWrapper.style.position = 'absolute';
-        iconWrapper.style.bottom = 'calc(7% + 5px)';
-        iconWrapper.style.left = 'calc(50% - 12px)';
+        iconWrapper.style.bottom = 'calc(7% - 5px)';
+        iconWrapper.style.left = 'calc(50% - 20px)';
         iconWrapper.style.textAlign = 'center';
         wrapper.appendChild(iconWrapper);
 
@@ -348,6 +348,7 @@
           icon.style.marginBottom = '-7px';
           //icon.style.opacity = '.9';
           icon.style.filter = 'drop-shadow(0 0 5px #000000)';
+          icon.style.padding = '0px 5px'; // helps to center the time remaining if the time remaining is larger than the icon
           iconWrapper.appendChild(icon);
         }
 
@@ -365,7 +366,8 @@
             clearInterval(timeRemainingInterval);
           }
         }, timeRemainingUpdateInterval);
-        timeRemaining.style.fontWeight = 'bold';
+        //timeRemaining.style.fontWeight = 'bold';
+        //timeRemaining.style.fontSize = '14px';
         timeRemaining.style.width = '30px'; // should match the icons width to help with centering
         timeRemaining.style.color = '#ffffff';
         timeRemaining.style.filter = 'drop-shadow(0 0 2px rgba(0, 0, 0, 0.8))';
