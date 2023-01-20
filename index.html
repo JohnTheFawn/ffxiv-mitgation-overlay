@@ -7,13 +7,12 @@
       body{
         margin: 0px;
         overflow: hidden;
+        font-family: Raleway,sans-serif;
       }
       #main{
         height: 100vh;
         width: 100vw;
         text-align: right;
-        padding-right: 20px;
-        padding-bottom: 20px;
         opacity: .8;
       }
     </style>
@@ -292,12 +291,15 @@
         const wrapper = document.createElement('div');
         wrapper.style.height = '100%';
         wrapper.style.display = 'inline-block';
+        wrapper.style.position = 'relative';
+        wrapper.style.paddingRight = '25px';
+        wrapper.style.paddingBottom = '25px';
+        wrapper.style.boxSizing = 'border-box';
 
         const svg = document.createElementNS(ns, 'svg');
         svg.setAttribute('id', svgId);
         svg.setAttribute('height', '100%');
         svg.setAttribute('viewBox', '0 0 70 266');
-        svg.style.margin = ('0 30px 30px 0');
 
         const progressBar = document.createElementNS(ns, 'path');
         progressBar.setAttribute('id', progressBarId);
@@ -316,7 +318,7 @@
         //       for a moment
         progressBar.setAttribute('d', "M 35.00,246.00 C 10.00,186.00 10.00,70.00 35.00,10.00");
         svg.appendChild(progressBar);
-        wrapper.style.margin = '0 0 0 -' + ((dashSize * (70/260)) + 5) + 'px';
+        wrapper.style.margin = '0 0 0 -' + ((dashSize * (70/260)) - 25) + 'px';
 
         const animation = document.createElementNS(ns, 'animate');
         animation.setAttribute('id', animationId);
@@ -329,18 +331,45 @@
 
         progressBars.push(progressBar);
 
+        const iconWrapper = document.createElement('div');
+        iconWrapper.style.display = 'inline-block';
+        iconWrapper.style.position = 'absolute';
+        iconWrapper.style.bottom = 'calc(7% + 5px)';
+        iconWrapper.style.left = 'calc(50% - 12px)';
+        iconWrapper.style.textAlign = 'center';
+        wrapper.appendChild(iconWrapper);
+
         if(ACTION_ID_ICON_MAP[id]){
           const icon = document.createElement('img');
           icon.src = ACTION_ID_ICON_MAP[id];
           icon.style.height = '30px';
           icon.style.width = '30px';
-          icon.style.position = 'relative';
-          icon.style.bottom = 'calc(7% + 20px)';
-          icon.style.left = 'calc(50%)'; // not lined up in browser but is in ACT, TODO figure out what browser ACT is using
+          icon.style.display = 'block';
+          icon.style.marginBottom = '-7px';
           //icon.style.opacity = '.9';
           icon.style.filter = 'drop-shadow(0 0 5px #000000)';
-          wrapper.appendChild(icon);
+          iconWrapper.appendChild(icon);
         }
+
+        const timeRemaining = document.createElement('span');
+        timeRemaining.innerHTML = parseFloat(duration).toFixed(1);
+        timeRemaining.dataset.timeRemaining = duration;
+        const timeRemainingUpdateInterval = 100;
+        const timeRemainingInterval = setInterval(function(){
+          if(timeRemaining){
+            const newTimeRemaining = parseFloat(timeRemaining.dataset.timeRemaining) - (timeRemainingUpdateInterval / 1000);
+            timeRemaining.innerHTML = parseFloat(newTimeRemaining).toFixed(1);
+            timeRemaining.dataset.timeRemaining = newTimeRemaining;
+          }
+          else if(timeRemainingInterval){
+            clearInterval(timeRemainingInterval);
+          }
+        }, timeRemainingUpdateInterval);
+        timeRemaining.style.fontWeight = 'bold';
+        timeRemaining.style.width = '30px'; // should match the icons width to help with centering
+        timeRemaining.style.color = '#ffffff';
+        timeRemaining.style.filter = 'drop-shadow(0 0 2px rgba(0, 0, 0, 0.8))';
+        iconWrapper.appendChild(timeRemaining);
 
         wrapper.appendChild(svg);
 
@@ -348,6 +377,9 @@
         // Remove bar if timer expires
         setTimeout(function(){
           if(progressBar){
+            if(timeRemainingInterval){
+              clearInterval(timeRemainingInterval);
+            }
             progressBars.forEach((existingProgressBar, index) => {
               if(existingProgressBar.getAttribute('id') === progressBarId){
                 progressBars.splice(index, 1);
