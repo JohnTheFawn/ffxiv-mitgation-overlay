@@ -269,8 +269,7 @@
               const actionId = message.actionId;
               const targetName = message.targetName;
               if(characterName !== null && targetName === characterName && actionIds.includes(actionId)){
-                const duration = message.duration;
-                createProgressBar(actionId, duration);
+                createProgressBar(actionId, message.duration);
               }
               break;
             case MESSAGE_TYPE_LOSE_EFFECT:
