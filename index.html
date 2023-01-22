@@ -59,7 +59,7 @@
       if(debug){
         console.log('debug', debug);
       }
-      const characterName = 'Tonk Tonkers';
+      let characterName = null;
       const main = document.getElementById('main');
       // Will be used to hold our progress bars for easy access
       const progressBars = [];
@@ -250,7 +250,7 @@
                 console.log(data);
               }
               const actionId = data.line[2];
-              if(data.line[8] === characterName && actionIds.includes(actionId)){
+              if(characterName !== null && data.line[8] === characterName && actionIds.includes(actionId)){
                 const duration = data.line[4];
                 createProgressBar(actionId, duration);
               }
@@ -263,6 +263,10 @@
               break;
           }
         }
+      });
+      // Set the player's character name so we know who they are later
+      addOverlayListener('ChangePrimaryPlayer', (data) => {
+        characterName = data.charName;
       });
       startOverlayEvents();
 
