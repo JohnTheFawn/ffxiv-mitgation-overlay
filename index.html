@@ -77,7 +77,7 @@
       //        ex: Rampart or Sentinel or Arm's Length wears off
       //    ex: "21|2023-01-16T13:37:49.1410000-05:00|107CDF82|Tonk Tonkers|16|Bulwark|107CDF82|Tonk Tonkers|640F|4D8000|0|0|0|0|0|0|0|0|0|0|0|0|0|0|98900|98900|10000|10000|||-87.90|51.12|1.50|-1.54|98900|98900|10000|10000|||-87.90|51.12|1.50|-1.54|0000130D|0|1|81681bf499192d9b"
       //        messageType: 21
-      //        timeStamp: 21|2023-01-16T13:37:49.1410000-05:00|107CDF82
+      //        timeStamp: 2023-01-16T13:37:49.1410000-05:00
       //        actor?Id: 107CDF82
       //        actor?Name: Tonk Tonkers
       //        ???: 16
@@ -92,8 +92,21 @@
       //        duration (seconds, 2 decimal places): 10.00
       //        actor?Id: 107CDF82
       //        actor?Name: Tonk Tonkers
-      //        target?Id: 107CDF82
-      //        target?Name: Tonk Tonkers
+      //        targetId: 107CDF82
+      //        targetName: Tonk Tonkers
+      function parseMessageGainEffect(message){
+        return {
+          messageType: message.line[0],
+          timeStamp: new Date(message.line[1]),
+          actionId: message.line[2],
+          actionName: message.line[3],
+          duration: message.line[4],
+          actorId: message.line[5],
+          actorName: message.line[6],
+          targetId: message.line[7],
+          targetName: message.line[8]
+        };
+      }
       //    ex: "30|2023-01-16T13:37:53.8630000-05:00|4D|Bulwark|0.00|107CDF82|Tonk Tonkers|107CDF82|Tonk Tonkers|00|98900|98900|ebfc01ff60fa6c8f"
       //        messageType: 30
       //        timeStamp: 2023-01-16T13:37:53.8630000-05:00
@@ -249,9 +262,14 @@
                 console.log('Gained an effect');
                 console.log(data);
               }
-              const actionId = data.line[2];
-              if(characterName !== null && data.line[8] === characterName && actionIds.includes(actionId)){
-                const duration = data.line[4];
+              const message = parseMessageGainEffect(data);
+              if(debug){
+                console.log(message);
+              }
+              const actionId = message.actionId;
+              const targetName = message.targetName;
+              if(characterName !== null && targetName === characterName && actionIds.includes(actionId)){
+                const duration = message.duration;
                 createProgressBar(actionId, duration);
               }
               break;
