@@ -75,6 +75,7 @@
       //        ex: getting a buff like Rampart or Sentinel or Arm's Length
       //    30: lose an effect
       //        ex: Rampart or Sentinel or Arm's Length wears off
+      // TODO function to parse this message type
       //    ex: "21|2023-01-16T13:37:49.1410000-05:00|107CDF82|Tonk Tonkers|16|Bulwark|107CDF82|Tonk Tonkers|640F|4D8000|0|0|0|0|0|0|0|0|0|0|0|0|0|0|98900|98900|10000|10000|||-87.90|51.12|1.50|-1.54|98900|98900|10000|10000|||-87.90|51.12|1.50|-1.54|0000130D|0|1|81681bf499192d9b"
       //        messageType: 21
       //        timeStamp: 2023-01-16T13:37:49.1410000-05:00
@@ -107,6 +108,7 @@
           targetName: message.line[8]
         };
       }
+      // TODO function to parse this message type
       //    ex: "30|2023-01-16T13:37:53.8630000-05:00|4D|Bulwark|0.00|107CDF82|Tonk Tonkers|107CDF82|Tonk Tonkers|00|98900|98900|ebfc01ff60fa6c8f"
       //        messageType: 30
       //        timeStamp: 2023-01-16T13:37:53.8630000-05:00
@@ -120,7 +122,7 @@
 
       // We only want a few of the message types
       // Character uses ability: Display something in the overlay to so it feels
-      //                         responsive
+      //                         responsive?
       // Character gains effect: Communicate that the character has the effect
       // Character loses effect: Communicate that the character no longer has
       //                         the effect
