@@ -330,11 +330,12 @@
         progressBar.setAttribute('stroke-width', '10');
         progressBar.setAttribute('stroke-linecap', 'round');
         progressBar.setAttribute('stroke-dasharray', dashSize);
-        // 25 seems to make it start more immediately, there is some offset here
+        // 60 seems to make it start more immediately, there is some offset here
         // that I can't figure out, I am sure a math whiz could run loops around
         // my approach to animating a curve
         // Note: this doesn't scale up too well, at like 600px+ it still hangs
         //       for a moment
+        // Note: This needs to match the "from" in the animation
         progressBar.setAttribute('stroke-dashoffset', 60);
         progressBar.setAttribute('filter', 'drop-shadow(0 0 5px #000000)');
         progressBar.setAttribute('d', "M 35.00,246.00 C 10.00,186.00 10.00,70.00 35.00,10.00");
@@ -344,6 +345,7 @@
         const animation = document.createElementNS(ns, 'animate');
         animation.setAttribute('id', animationId);
         animation.setAttribute('attributeName', 'stroke-dashoffset');
+        // Note: This needs to match the "stroke-dashoffset" in the path
         animation.setAttribute('from', 60);
         animation.setAttribute('to', dashSize);
         animation.setAttribute('dur', duration + 's');
