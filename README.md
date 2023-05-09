@@ -9,7 +9,14 @@ This is an addon for ACT, so [ACT itself is required](https://advancedcombattrac
 
 ## Screenshots
 
-Working on it
+### Both
+![Gif of Final Fantasy 14 Icons and Addon Bars](/readme_assets/both.gif)
+
+### Addon
+![Gif of Final Fantasy 14 Icons and Addon Bars](/readme_assets/bars.gif)
+
+### Vanilla
+![Gif of Final Fantasy 14 Icons and Addon Bars](/readme_assets/vanilla.gif)
 
 ## F.A.Q
 
