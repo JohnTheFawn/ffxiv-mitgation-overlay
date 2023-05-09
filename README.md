@@ -1,7 +1,11 @@
 # ffxiv-mitigation-overlay
 The purpose of this tool is to provide an alternative overlay focused only on tank mitigations.
-This helps to separate the buffs into a separate area to make them easier to view and track.
+
+Helps to separate the buffs into a separate area to make them easier to view and track.
+
 The bars also offer a convenient way of estimating the time remaining without having to read any values.
+
+Displays down to the 10ths of a second so you don't run into that weird mental state of "I don't know if the game is rounding up or down, I am afraid this is going to wear off .5s into it saying 1" or "Wow, that buff lasted for almost a whole second with no time left on the timer"
 
 ## Requirements and installation.
 
