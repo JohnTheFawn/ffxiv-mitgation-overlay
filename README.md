@@ -25,14 +25,14 @@ To help with sizing and position, I recommend turning "Force white background", 
 
 ## Screenshots
 
-### Both
-![Gif of Final Fantasy 14 Icons and Addon Bars](/readme_assets/both.gif)
+### Vanilla
+![Gif of Final Fantasy 14 Icons and Addon Bars](/readme_assets/vanilla.gif)
 
 ### Addon
 ![Gif of Final Fantasy 14 Icons and Addon Bars](/readme_assets/bars.gif)
 
-### Vanilla
-![Gif of Final Fantasy 14 Icons and Addon Bars](/readme_assets/vanilla.gif)
+### Both
+![Gif of Final Fantasy 14 Icons and Addon Bars](/readme_assets/both.gif)
 
 ### Dark Knight
 ![Gif of Final Fantasy 14 Dark Knight Mitigation Icons and Addon Bars](/readme_assets/drk.gif)
