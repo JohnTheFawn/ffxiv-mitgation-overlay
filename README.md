@@ -3,7 +3,13 @@ The purpose of this tool is to provide an alternative overlay focused only on ta
 This helps to separate the buffs into a separate area to make them easier to view and track.
 The bars also offer a convenient way of estimating the time remaining without having to read any values.
 
+## Requirements and installation.
+
+This is an addon for ACT, so [ACT itself is required](https://advancedcombattracker.com/download.php) and [must already be set up](https://github.com/ravahn/FFXIV_ACT_Plugin).
+
 ## Screenshots
+
+Working on it
 
 ## F.A.Q
 
