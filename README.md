@@ -34,6 +34,15 @@ To help with sizing and position, I recommend turning "Force white background", 
 ### Vanilla
 ![Gif of Final Fantasy 14 Icons and Addon Bars](/readme_assets/vanilla.gif)
 
+### Dark Knight
+![Gif of Final Fantasy 14 Dark Knight Mitigation Icons and Addon Bars](/readme_assets/drk.gif)
+
+### Gun Breaker
+![Gif of Final Fantasy 14 Gun Breaker Mitigation Icons and Addon Bars](/readme_assets/gnb.gif)
+
+### Warrior
+![Gif of Final Fantasy 14 Warrior Mitigation Icons and Addon Bars](/readme_assets/war.gif)
+
 ## F.A.Q
 
 ### Will this addon need to be updated when ACT or the game updates?
