@@ -7,6 +7,18 @@ The bars also offer a convenient way of estimating the time remaining without ha
 
 This is an addon for ACT, so [ACT itself is required](https://advancedcombattracker.com/download.php) and [must already be set up](https://github.com/ravahn/FFXIV_ACT_Plugin).
 
+Inside of ACT, select the Plugins tab at the top, then the OverlayPlugin.dll tab.
+
+Press New at the bottom, call it Mitigation Overlay (or whatever you want, dealer's choice), for the Preset choose "Custom" at the bottom.
+
+In the URL field, paste in `https://johnthefawn.github.io/ffxiv-mitigation-overlay/`
+
+Make sure "Enable Overlay" is checked
+
+To help with sizing and position, I recommend turning "Force white background", resizing the window, and then turning off "Force white background" once you have it positioned how you want. After that, I turn on "Enable clickthrough" and "Lock overlay" so it doesn't prevent me from clicking on any parts of the UI or turning my camera in game.
+
+![Image of Installation instructions](/readme_assets/installation.png)
+
 ## Screenshots
 
 ### Both
