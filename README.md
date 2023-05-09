@@ -20,3 +20,29 @@ Yup! Everything is programmed in a way to be responsive, just scale the area to 
 ### Are those bars curved?
 
 Sure are, they were the hardest part of the project, thanks for asking.
+
+### Which jobs or skills are supported?
+
+Currently every tank's personal and shared mitigation will work.
+
+- Arm's Length
+- Bloodwhetting
+- Bulwark
+- Camouflage
+- Clarity of Corundum
+- Dark Missionary
+- Hallowed Ground
+- Holmgang
+- Holy Sheltron
+- Heart of Corundum
+- Heart of Light
+- Living Dead
+- Nebula
+- Oblation
+- Rampart
+- Shadow Wall
+- Stem the Flow
+- Superbolide
+- Vulnerability Down 
+     - the mitigation provided by Warrior's "Vengeance", not to be confused with the thorns portion of the skill
+
