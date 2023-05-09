@@ -44,7 +44,7 @@ Previous versions will continue to work just fine (except they won't display any
 
 ### Will this addon scale to my resolution?
 
-Yup! Everything is programmed in a way to be responsive, just scale the area to whatever size you want athe bars will adjust accordingly
+Yup! Everything is programmed in a way to be responsive, just scale the area to whatever size you want and the bars will adjust accordingly
 
 ### Are those bars curved?
 
