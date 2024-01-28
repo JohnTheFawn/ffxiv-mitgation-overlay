@@ -87,6 +87,19 @@
       //        actor?Name: Tonk Tonkers
       //        target?Id: 107CDF82
       //        target?Name: Tonk Tonkers
+      function parseMessageLostEffect(message){
+        return {
+          messageType: message.line[0],
+          timeStamp: new Date(message.line[1]),
+          actionId: message.line[2],
+          actionName: message.line[3],
+          duration: message.line[4],
+          actorId: message.line[5],
+          actorName: message.line[6],
+          targetId: message.line[7],
+          targetName: message.line[8]
+        }
+      }
 
       // We only want a few of the message types
       // Character uses ability: Display something in the overlay to so it feels
@@ -139,6 +152,39 @@
       const ACTION_ID_WARRIOR_VULNERABILITY_DOWN = '390'; // mit from vengeance
       const ACTION_ID_WARRIOR_SHAKE_IT_OFF = '581'; // shield
       const ACTION_ID_WARRIOR_SHAKE_IT_OFF_OVER_TIME = '83C'; // healing from shake it off
+
+      // Healer
+      // White Mage
+      const ACTION_ID_WHITEMAGE_AQUAVEIL = 'A94';
+      const ACTION_ID_WHITEMAGE_TEMPERANCE = '751';
+      // Scholar
+      const ACTION_ID_SCHOLAR_SACRED_SOIL = '12B';
+      // Astrologian
+      const ACTION_ID_ASTROLOGIAN_COLLECTIVE_UNCONSCIOUS = '351';
+      const ACTION_ID_ASTROLOGIAN_EXALTATION = 'A9D';
+      // Sage
+      const ACTION_ID_SAGE_HOLOS = 'BBB';
+      const ACTION_ID_SAGE_KERACHOLE = 'A3A';
+      const ACTION_ID_SAGE_TAUROCHOLE = 'A3B';
+
+      // Melee
+      // Dragoon
+      // Monk
+      // Samurai
+      // Repaer
+
+
+      // Physical Ranged
+      // Bard
+      // Dancer
+      // Machinist
+
+      // Magical Ranged
+      // Summoner
+      // Red Mage
+      // Black Mage
+
+
       // All Mitigation Action IDs
       const actionIds = [
         ACTION_ID_ARMS_LENGTH,
@@ -165,7 +211,15 @@
         ACTION_ID_WARRIOR_BLOODWHETTING,
         ACTION_ID_WARRIOR_HOLMGANG,
         ACTION_ID_WARRIOR_STEM_THE_FLOW,
-        ACTION_ID_WARRIOR_VULNERABILITY_DOWN
+        ACTION_ID_WARRIOR_VULNERABILITY_DOWN,
+        ACTION_ID_WHITEMAGE_AQUAVEIL,
+        ACTION_ID_WHITEMAGE_TEMPERANCE,
+        ACTION_ID_SCHOLAR_SACRED_SOIL,
+        ACTION_ID_ASTROLOGIAN_COLLECTIVE_UNCONSCIOUS,
+        ACTION_ID_ASTROLOGIAN_EXALTATION,
+        ACTION_ID_SAGE_HOLOS,
+        ACTION_ID_SAGE_KERACHOLE,
+        ACTION_ID_SAGE_TAUROCHOLE
       ];
 
       const ACTION_ID_COLOR_MAP = {
@@ -191,7 +245,15 @@
         [ACTION_ID_WARRIOR_HOLMGANG]: '#dec5cd',
         [ACTION_ID_WARRIOR_STEM_THE_FLOW]: '#b7d33b',
         [ACTION_ID_WARRIOR_VENGEANCE]: '#9e2eb0',
-        [ACTION_ID_WARRIOR_VULNERABILITY_DOWN]: '#5579a4'
+        [ACTION_ID_WARRIOR_VULNERABILITY_DOWN]: '#5579a4',
+        [ACTION_ID_WHITEMAGE_AQUAVEIL]: '#6f96dc',
+        [ACTION_ID_WHITEMAGE_TEMPERANCE]: '#cbf1f9',
+        [ACTION_ID_SCHOLAR_SACRED_SOIL]: '#78994c',
+        [ACTION_ID_ASTROLOGIAN_COLLECTIVE_UNCONSCIOUS]: '#4a60dd',
+        [ACTION_ID_ASTROLOGIAN_EXALTATION]: '#32408c',
+        [ACTION_ID_SAGE_HOLOS]: '#74e2df',
+        [ACTION_ID_SAGE_KERACHOLE]: '#9ea7ed',
+        [ACTION_ID_SAGE_TAUROCHOLE]: '#6bd4f2'
       };
 
       const ACTION_ID_ICON_MAP = {
@@ -216,7 +278,15 @@
         [ACTION_ID_WARRIOR_BLOODWHETTING]: 'assets/icons/war/bloodwhetting.png',
         [ACTION_ID_WARRIOR_HOLMGANG]: 'assets/icons/war/holmgang.png',
         [ACTION_ID_WARRIOR_STEM_THE_FLOW]: 'assets/icons/war/stem_the_flow.png',
-        [ACTION_ID_WARRIOR_VULNERABILITY_DOWN]: 'assets/icons/war/vulnerability_down.png'
+        [ACTION_ID_WARRIOR_VULNERABILITY_DOWN]: 'assets/icons/war/vulnerability_down.png',
+        [ACTION_ID_WHITEMAGE_AQUAVEIL]: 'assets/icons/whm/aquaveil.png',
+        [ACTION_ID_WHITEMAGE_TEMPERANCE]: 'assets/icons/whm/temperance.png',
+        [ACTION_ID_SCHOLAR_SACRED_SOIL]: 'assets/icons/sch/sacred_soil.png',
+        [ACTION_ID_ASTROLOGIAN_COLLECTIVE_UNCONSCIOUS]: 'assets/icons/ast/collective_unconscious.png',
+        [ACTION_ID_ASTROLOGIAN_EXALTATION]: 'assets/icons/ast/exaltation.png',
+        [ACTION_ID_SAGE_HOLOS]: 'assets/icons/sge/holos.png',
+        [ACTION_ID_SAGE_KERACHOLE]: 'assets/icons/sge/kerachole.png',
+        [ACTION_ID_SAGE_TAUROCHOLE]: 'assets/icons/sge/taurochole.png'
       };
 
       addOverlayListener(eventType, (data) => {
@@ -234,14 +304,14 @@
                 console.log('Gained an effect');
                 console.log(data);
               }
-              const message = parseMessageGainEffect(data);
+              const messageGainedEffect = parseMessageGainEffect(data);
               if(debug){
-                console.log(message);
+                console.log(messageGainedEffect);
               }
-              const actionId = message.actionId;
-              const targetName = message.targetName;
-              if(characterName !== null && targetName === characterName && actionIds.includes(actionId)){
-                createProgressBar(actionId, message.duration);
+              const gainedEffectActionId = messageGainedEffect.actionId;
+              const gainedEffectTargetName = messageGainedEffect.targetName;
+              if(characterName !== null && gainedEffectTargetName === characterName && actionIds.includes(gainedEffectActionId)){
+                createProgressBar(gainedEffectActionId, messageGainedEffect.duration);
               }
               break;
             case MESSAGE_TYPE_LOSE_EFFECT:
@@ -249,6 +319,16 @@
                 console.log('Lost an effect');
                 console.log(data);
               }
+              const messageLostEffect = parseMessageLostEffect(data);
+              if(debug){
+                console.log(messageLostEffect);
+              }
+              const lostEffectActionId = messageLostEffect.actionId;
+              const lostEffectTargetName = messageLostEffect.targetName;
+              if(characterName !== null && lostEffectTargetName === characterName && actionIds.includes(lostEffectActionId)){
+                deleteProgressBarByActionId(lostEffectActionId, messageLostEffect.duration);
+              }
+              
               break;
           }
         }
@@ -274,14 +354,26 @@
         });
       }
 
+      function deleteProgressBarByActionId(id){
+        const wrapperId = 'wrapper-' + id;
+        const existingProgressBar = document.getElementById(wrapperId);
+        if(existingProgressBar){
+          existingProgressBar.remove();
+        }
+      }
+
       function createProgressBar(id, duration){
         const svgId = 'svg-' + id;
         const progressBarId = 'progressBar-' + id;
         const animationId = 'animation-' + id;
+        const wrapperId = 'wrapper-' + id;
         const dashSize = getProgressBarDashSize();
         const ns = 'http://www.w3.org/2000/svg';
 
+        deleteProgressBarByActionId(id);
+
         const wrapper = document.createElement('div');
+        wrapper.setAttribute('id', wrapperId);
         wrapper.style.height = '100%';
         wrapper.style.display = 'inline-block';
         wrapper.style.position = 'relative';
@@ -382,7 +474,7 @@
                 progressBars.splice(index, 1);
               }
             });
-            svg.parentNode.remove();
+            wrapper.remove();
           }
         }, duration * 1000);
 
