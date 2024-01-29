@@ -15,13 +15,52 @@
         text-align: right;
         opacity: .8;
       }
+      .percentMitWhite{
+        text-shadow:
+          0px 0px 10px rgb(255, 255, 255),
+          0px 0px 10px rgb(255, 255, 255),
+          0px 0px 10px rgb(255, 255, 255),
+          -1px 0px 2px rgb(0, 0, 0),
+          1px 0px 2px rgb(0, 0, 0),
+          0px -1px 2px rgb(0, 0, 0),
+          0px 1px 2px rgb(0, 0, 0);
+      }
+      .percentMitGreen{
+        text-shadow:
+          0px 0px 10px rgb(0, 255, 0),
+          0px 0px 10px rgb(0, 255, 0),
+          0px 0px 10px rgb(0, 255, 0),
+          -1px 0px 2px rgb(0, 0, 0),
+          1px 0px 2px rgb(0, 0, 0),
+          0px -1px 2px rgb(0, 0, 0),
+          0px 1px 2px rgb(0, 0, 0);
+      }
+      .percentMitYellow{
+        text-shadow:
+          0px 0px 10px rgb(255, 255, 0),
+          0px 0px 10px rgb(255, 255, 0),
+          0px 0px 10px rgb(255, 255, 0),
+          -1px 0px 2px rgb(0, 0, 0),
+          1px 0px 2px rgb(0, 0, 0),
+          0px -1px 2px rgb(0, 0, 0),
+          0px 1px 2px rgb(0, 0, 0);
+      }
+      .percentMitRed{
+        text-shadow:
+          0px 0px 10px rgb(255, 0, 0),
+          0px 0px 10px rgb(255, 0, 0),
+          0px 0px 10px rgb(255, 0, 0),
+          -1px 0px 2px rgb(0, 0, 0),
+          1px 0px 2px rgb(0, 0, 0),
+          0px -1px 2px rgb(0, 0, 0),
+          0px 1px 2px rgb(0, 0, 0);
+      }
     </style>
   </head>
   <body>
     <div id="main">
-      <div id="percentMit" style="
+      <div style="
         color: #ffffff;
-        filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.8));
         position: absolute;
         right: 15px;
         top: 0px;
@@ -29,7 +68,20 @@
         flex-direction: column;
         height: 100%;
         justify-content: center;
-      "></div>
+      ">
+        <div id="percentMit"
+          class="percentMitWhite"
+          style="
+            height: 45px;
+            width: 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            margin-top: -10px;
+          "
+        ></div>
+      </div>
     </div>
   </body>
   <footer>
@@ -407,7 +459,6 @@
               const gainedEffectTargetName = messageGainedEffect.targetName;
               if(characterName !== null && gainedEffectTargetName === characterName && ACTION_IDS.includes(gainedEffectActionId)){
                 addMitigation(gainedEffectActionId, messageGainedEffect.duration);
-                //createProgressBar(gainedEffectActionId, messageGainedEffect.duration);
               }
               break;
             case MESSAGE_TYPE_LOSE_EFFECT:
@@ -452,10 +503,25 @@
         Object.keys(activeMitigation).forEach(actionId => {
           currentMit += (1 - currentMit) * ACTIONS_BY_ID[actionId].percentage;
         });
-        console.log(currentMit);
+        currentMit = Math.round(currentMit * 100);
         if(currentMit){
-          console.log('set innerhtml');
-          percentMit.innerHTML = Math.round(currentMit * 100) + '%';
+          percentMit.innerHTML = currentMit + '%';
+          percentMit.classList.remove('percentMitRed');
+          percentMit.classList.remove('percentMitYellow');
+          percentMit.classList.remove('percentMitGreen');
+          percentMit.classList.remove('percentMitWhite');
+          if(currentMit >= 60){
+            percentMit.classList.toggle('percentMitRed');
+          }
+          else if(currentMit >= 40){
+            percentMit.classList.toggle('percentMitYellow');
+          }
+          else if(currentMit >= 20){
+            percentMit.classList.toggle('percentMitGreen');
+          }
+          else{
+            percentMit.classList.toggle('percentMitWhite');
+          }
         }
         else{
           percentMit.innerHTML = '';
