@@ -19,6 +19,17 @@
   </head>
   <body>
     <div id="main">
+      <div id="percentMit" style="
+        color: #ffffff;
+        filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.8));
+        position: absolute;
+        right: 15px;
+        top: 0px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: center;
+      "></div>
     </div>
   </body>
   <footer>
@@ -29,6 +40,7 @@
       }
       let characterName = null;
       const main = document.getElementById('main');
+      const percentMit = document.getElementById('percentMit');
       // Will be used to hold our progress bars for easy access
       const progressBars = [];
 
@@ -117,62 +129,11 @@
         MESSAGE_TYPE_LOSE_EFFECT
       ];
 
-      // Tank
-      const ACTION_ID_ARMS_LENGTH = '4B9';
-      const ACTION_ID_RAMPART = '4A7';
-      // Gun Breaker
-      const ACTION_ID_GUN_BREAKER_CAMOUFLAGE = '728';
-      const ACTION_ID_GUN_BREAKER_CATHARSIS_OF_CORUNDUM = 'A7D'; // heal from heart of corundum
-      const ACTION_ID_GUN_BREAKER_CLARITY_OF_CORUNDUM = 'A7C'; // 4s mit from heart of corundum
-      const ACTION_ID_GUN_BREAKER_HEART_OF_CORUNDUM = 'A7B';
-      const ACTION_ID_GUN_BREAKER_HEART_OF_LIGHT = '72F';
-      const ACTION_ID_GUN_BREAKER_NEBULA = '72A';
-      const ACTION_ID_GUN_BREAKER_SUPERBOLIDE = '72C';
-      // Dark Knight
-      const ACTION_ID_DARK_KNIGHT_DARK_MIND = '2EA';
-      const ACTION_ID_DARK_KNIGHT_DARK_MISSIONARY = '766';
-      const ACTION_ID_DARK_KNIGHT_LIVING_DEAD = '32A';
-      const ACTION_ID_DARK_KNIGHT_OBLATION = 'A7A';
-      const ACTION_ID_DARK_KNIGHT_SHADOW_WALL = '2EB';
-      const ACTION_ID_DARK_KNIGHT_UNDEAD_REBIRTH = null; // TODO find something to trigger this
-      const ACTION_ID_DARK_KNIGHT_WALKING_DEAD = null; // TODO find something to trigger this
-      // Paladin
-      const ACTION_ID_PALADIN_BULWARK = '4D';
-      const ACTION_ID_PALADIN_DIVINE_VEIL = '552'; // shield
-      const ACTION_ID_PALADIN_HALLOWED_GROUND = '52';
-      const ACTION_ID_PALADIN_HOLY_SHELTRON = 'A72';
-      const ACTION_ID_PALADIN_KNIGHTS_RESOLVE = 'A73'; // 4s mit from holy sheltron
-      const ACTION_ID_PALADIN_SENTINEL = '4A';
-      // Warrior
-      const ACTION_ID_WARRIOR_BLOODWHETTING = 'A76';
-      const ACTION_ID_WARRIOR_HOLMGANG = '199';
-      const ACTION_ID_WARRIOR_STEM_THE_FLOW = 'A77'; // 4s mit from bloodwhetting
-      const ACTION_ID_WARRIOR_STEM_THE_TIDE = 'A78'; // shield from bloodwhetting
-      const ACTION_ID_WARRIOR_VENGEANCE = '59'; // thorns
-      const ACTION_ID_WARRIOR_VULNERABILITY_DOWN = '390'; // mit from vengeance
-      const ACTION_ID_WARRIOR_SHAKE_IT_OFF = '581'; // shield
-      const ACTION_ID_WARRIOR_SHAKE_IT_OFF_OVER_TIME = '83C'; // healing from shake it off
-
-      // Healer
-      // White Mage
-      const ACTION_ID_WHITEMAGE_AQUAVEIL = 'A94';
-      const ACTION_ID_WHITEMAGE_TEMPERANCE = '751';
-      // Scholar
-      const ACTION_ID_SCHOLAR_SACRED_SOIL = '12B';
-      // Astrologian
-      const ACTION_ID_ASTROLOGIAN_COLLECTIVE_UNCONSCIOUS = '351';
-      const ACTION_ID_ASTROLOGIAN_EXALTATION = 'A9D';
-      // Sage
-      const ACTION_ID_SAGE_HOLOS = 'BBB';
-      const ACTION_ID_SAGE_KERACHOLE = 'A3A';
-      const ACTION_ID_SAGE_TAUROCHOLE = 'A3B';
-
       // Melee
       // Dragoon
       // Monk
       // Samurai
       // Repaer
-
 
       // Physical Ranged
       // Bard
@@ -184,110 +145,244 @@
       // Red Mage
       // Black Mage
 
-
-      // All Mitigation Action IDs
-      const actionIds = [
-        ACTION_ID_ARMS_LENGTH,
-        ACTION_ID_RAMPART,
-        ACTION_ID_GUN_BREAKER_CAMOUFLAGE,
-        ACTION_ID_GUN_BREAKER_CLARITY_OF_CORUNDUM,
-        ACTION_ID_GUN_BREAKER_HEART_OF_CORUNDUM,
-        ACTION_ID_GUN_BREAKER_HEART_OF_LIGHT,
-        ACTION_ID_GUN_BREAKER_NEBULA,
-        ACTION_ID_GUN_BREAKER_SUPERBOLIDE,
-        ACTION_ID_DARK_KNIGHT_DARK_MIND,
-        ACTION_ID_DARK_KNIGHT_DARK_MISSIONARY,
-        ACTION_ID_DARK_KNIGHT_LIVING_DEAD,
-        ACTION_ID_DARK_KNIGHT_OBLATION,
-        ACTION_ID_DARK_KNIGHT_SHADOW_WALL,
-        //ACTION_ID_DARK_KNIGHT_UNDEAD_REBIRTH,
-        //ACTION_ID_DARK_KNIGHT_WALKING_DEAD,
-        ACTION_ID_PALADIN_BULWARK,
-        //ACTION_ID_PALADIN_DIVINE_VEIL,
-        ACTION_ID_PALADIN_HALLOWED_GROUND,
-        ACTION_ID_PALADIN_HOLY_SHELTRON,
-        ACTION_ID_PALADIN_KNIGHTS_RESOLVE,
-        ACTION_ID_PALADIN_SENTINEL,
-        ACTION_ID_WARRIOR_BLOODWHETTING,
-        ACTION_ID_WARRIOR_HOLMGANG,
-        ACTION_ID_WARRIOR_STEM_THE_FLOW,
-        ACTION_ID_WARRIOR_VULNERABILITY_DOWN,
-        ACTION_ID_WHITEMAGE_AQUAVEIL,
-        ACTION_ID_WHITEMAGE_TEMPERANCE,
-        ACTION_ID_SCHOLAR_SACRED_SOIL,
-        ACTION_ID_ASTROLOGIAN_COLLECTIVE_UNCONSCIOUS,
-        ACTION_ID_ASTROLOGIAN_EXALTATION,
-        ACTION_ID_SAGE_HOLOS,
-        ACTION_ID_SAGE_KERACHOLE,
-        ACTION_ID_SAGE_TAUROCHOLE
+      const ACTIONS = [
+        // Tank
+        {
+          name: 'Arm\'s Length',
+          id: '4B9',
+          color: '#ba7858',
+          icon: 'assets/icons/tank/arms_length.png',
+          percentage: null,
+        },
+        {
+          name: 'Rampart',
+          id: '4A7',
+          color: '#7098ef',
+          icon: 'assets/icons/tank/rampart.png',
+          percentage: .2
+        },
+        // Gunbreaker
+        {
+          name: 'Camouflage',
+          id: '728',
+          color: '#9bbbc9',
+          icon: 'assets/icons/gnb/camouflage.png',
+          percentage: .1
+        },
+        {
+          name: 'Clarity of Corundum',
+          id: 'A7C',
+          color: '#65fed7',
+          icon: 'assets/icons/gnb/clarity_of_corundum.png',
+          percentage: .15
+        },
+        {
+          name: 'Heart of Corundum',
+          id: 'A7B',
+          color: '#65fed7',
+          icon: 'assets/icons/gnb/heart_of_corundum.png',
+          percentage: .15
+        },
+        {
+          name: 'Heart of Light',
+          id: '72F',
+          color: '#f9cd36',
+          icon: 'assets/icons/gnb/heart_of_light.png',
+          percentage: .1
+        },
+        {
+          name: 'Nebula',
+          id: '72A',
+          color: '#8b5f7e',
+          icon: 'assets/icons/gnb/nebula.png',
+          percentage: .3
+        },
+        {
+          name: 'Superbolide',
+          id: '72C',
+          color: '#3595c4',
+          icon: 'assets/icons/gnb/superbolide.png',
+          percentage: null
+        },
+        // Dark Knight
+        {
+          name: 'Dark Mind',
+          id: '2EA',
+          color: '#e4ba4f',
+          icon: 'assets/icons/drk/dark_mind.png',
+          percentage: .2
+        },
+        {
+          name: 'Dark Missionary',
+          id: '766',
+          color: '#e46213',
+          icon: 'assets/icons/drk/dark_missionary.png',
+          percentage: .1
+        },
+        {
+          name: 'Living Dead',
+          id: '32A',
+          color: '#ed2e37',
+          icon: 'assets/icons/drk/living_dead.png',
+          percentage: null
+        },
+        {
+          name: 'Oblation',
+          id: 'A7A',
+          color: '#ff19ff',
+          icon: 'assets/icons/drk/oblation.png',
+          percentage: .1
+        },
+        {
+          name: 'Shadow Wall',
+          id: '2EB',
+          color: '#7f2b8a',
+          icon: 'assets/icons/drk/shadow_wall.png',
+          percentage: .3
+        },
+        // Paladin
+        {
+          name: 'Bulwark',
+          id: '4D',
+          color: '#91edff',
+          icon: 'assets/icons/pld/bulwark.png',
+          percentage: .2
+        },
+        {
+          name: 'Hallowed Ground',
+          id: '52',
+          color: '#f4e690',
+          icon: 'assets/icons/pld/hallowed_ground.png',
+          percentage: null
+        },
+        {
+          name: 'Holy Sheltron',
+          id: 'A72',
+          color: '#f17c71',
+          icon: 'assets/icons/pld/holy_sheltron.png',
+          percentage: .15
+        },
+        {
+          name: 'Knight\'s Resolve',
+          id: 'A73',
+          color: '#0a3c3d',
+          icon: 'assets/icons/pld/knights_resolve.png',
+          percentage: .15
+        },
+        {
+          name: 'Sentinel',
+          id: '4A',
+          color: '#0051ab',
+          icon: 'assets/icons/pld/sentinel.png',
+          percentage: .3
+        },
+        // Warrior
+        {
+          name: 'Bloodwhetting',
+          id: 'A76',
+          color: '#dc4e24',
+          icon: 'assets/icons/war/bloodwhetting.png',
+          percentage: .1
+        },
+        {
+          name: 'Holmgang',
+          id: '199',
+          color: '#dec5cd',
+          icon: 'assets/icons/war/holmgang.png',
+          percentage: null
+        },
+        {
+          name: 'Stem the Flow',
+          id: 'A77',
+          color: '#b7d33b',
+          icon: 'assets/icons/war/stem_the_flow.png',
+          percentage: .1
+        },
+        {
+          name: 'Vengeance',
+          id: '59',
+          color: '#9e2eb0',
+          icon: 'assets/icons/war/vengeance.png',
+          percentage: .3
+        },
+        {
+          name: 'Vulnerability Down',
+          id: '390',
+          color: '#5579a4',
+          icon: 'assets/icons/war/vulnerability_down.png',
+          percentage: .3
+        },
+        // White Mage
+        {
+          name: 'Aquaveil',
+          id: 'A94',
+          color: '#6f96dc',
+          icon: 'assets/icons/whm/aquaveil.png',
+          percentage: .15
+        },
+        {
+          name: 'Temperance',
+          id: '751',
+          color: '#cbf1f9',
+          icon: 'assets/icons/whm/temperance.png',
+          percentage: .1
+        },
+        // Scholar
+        {
+          name: 'Sacred Soil',
+          id: '12B',
+          color: '#78994c',
+          icon: 'assets/icons/sch/sacred_soil.png',
+          percentage: .1
+        },
+        // Astrologian
+        {
+          name: 'Collective Unconscious',
+          id: '351',
+          color: '#4a60dd',
+          icon: 'assets/icons/ast/collective_unconscious.png',
+          percentage: .1
+        },
+        {
+          name: 'Exaltation',
+          id: 'A9D',
+          color: '#32408c',
+          icon: 'assets/icons/ast/exaltation.png',
+          percentage: .1
+        },
+        // Sage
+        {
+          name: 'Holos',
+          id: 'BBB',
+          color: '#74e2df',
+          icon: 'assets/icons/sge/holos.png',
+          percentage: .1
+        },
+        {
+          name: 'Kerachole',
+          id: 'A3A',
+          color: '#9ea7ed',
+          icon: 'assets/icons/sge/kerachole.png',
+          percentage: .1
+        },
+        {
+          name: 'Taurochole',
+          id: 'A3B',
+          color: '#6bd4f2',
+          icon: 'assets/icons/sge/taurochole.png',
+          percentage: .1
+        }
       ];
+      
+      const ACTIONS_BY_ID = {};
+      const ACTION_IDS = [];
 
-      const ACTION_ID_COLOR_MAP = {
-        [ACTION_ID_ARMS_LENGTH]: '#ba7858',
-        [ACTION_ID_RAMPART]: '#7098ef',
-        [ACTION_ID_GUN_BREAKER_CAMOUFLAGE]: '#9bbbc9',
-        [ACTION_ID_GUN_BREAKER_CLARITY_OF_CORUNDUM]: '#65fed7',
-        [ACTION_ID_GUN_BREAKER_HEART_OF_CORUNDUM]: '#65fed7',
-        [ACTION_ID_GUN_BREAKER_HEART_OF_LIGHT]: '#f9cd36',
-        [ACTION_ID_GUN_BREAKER_NEBULA]: '#8b5f7e',
-        [ACTION_ID_GUN_BREAKER_SUPERBOLIDE]: '#3595c4',
-        [ACTION_ID_DARK_KNIGHT_DARK_MIND]: '#e4ba4f',
-        [ACTION_ID_DARK_KNIGHT_DARK_MISSIONARY]: '#e46213',
-        [ACTION_ID_DARK_KNIGHT_LIVING_DEAD]: '#ed2e37',
-        [ACTION_ID_DARK_KNIGHT_OBLATION]: '#ff19ff',
-        [ACTION_ID_DARK_KNIGHT_SHADOW_WALL]: '#7f2b8a',
-        [ACTION_ID_PALADIN_BULWARK]: '#91edff',
-        [ACTION_ID_PALADIN_HALLOWED_GROUND]: '#f4e690',
-        [ACTION_ID_PALADIN_HOLY_SHELTRON]: '#f17c71',
-        [ACTION_ID_PALADIN_KNIGHTS_RESOLVE]: '#0a3c3d',
-        [ACTION_ID_PALADIN_SENTINEL]: '#0051ab',
-        [ACTION_ID_WARRIOR_BLOODWHETTING]: '#dc4e24',
-        [ACTION_ID_WARRIOR_HOLMGANG]: '#dec5cd',
-        [ACTION_ID_WARRIOR_STEM_THE_FLOW]: '#b7d33b',
-        [ACTION_ID_WARRIOR_VENGEANCE]: '#9e2eb0',
-        [ACTION_ID_WARRIOR_VULNERABILITY_DOWN]: '#5579a4',
-        [ACTION_ID_WHITEMAGE_AQUAVEIL]: '#6f96dc',
-        [ACTION_ID_WHITEMAGE_TEMPERANCE]: '#cbf1f9',
-        [ACTION_ID_SCHOLAR_SACRED_SOIL]: '#78994c',
-        [ACTION_ID_ASTROLOGIAN_COLLECTIVE_UNCONSCIOUS]: '#4a60dd',
-        [ACTION_ID_ASTROLOGIAN_EXALTATION]: '#32408c',
-        [ACTION_ID_SAGE_HOLOS]: '#74e2df',
-        [ACTION_ID_SAGE_KERACHOLE]: '#9ea7ed',
-        [ACTION_ID_SAGE_TAUROCHOLE]: '#6bd4f2'
-      };
+      ACTIONS.forEach(action => {
+        ACTIONS_BY_ID[action.id] = action;
+        ACTION_IDS.push(action.id);
+      });
 
-      const ACTION_ID_ICON_MAP = {
-        [ACTION_ID_ARMS_LENGTH]: 'assets/icons/tank/arms_length.png',
-        [ACTION_ID_RAMPART]: 'assets/icons/tank/rampart.png',
-        [ACTION_ID_GUN_BREAKER_CAMOUFLAGE]: 'assets/icons/gnb/camouflage.png',
-        [ACTION_ID_GUN_BREAKER_CLARITY_OF_CORUNDUM]: 'assets/icons/gnb/clarity_of_corundum.png',
-        [ACTION_ID_GUN_BREAKER_HEART_OF_CORUNDUM]: 'assets/icons/gnb/heart_of_corundum.png',
-        [ACTION_ID_GUN_BREAKER_HEART_OF_LIGHT]: 'assets/icons/gnb/heart_of_light.png',
-        [ACTION_ID_GUN_BREAKER_NEBULA]: 'assets/icons/gnb/nebula.png',
-        [ACTION_ID_GUN_BREAKER_SUPERBOLIDE]: 'assets/icons/gnb/superbolide.png',
-        [ACTION_ID_DARK_KNIGHT_DARK_MIND]: 'assets/icons/drk/dark_mind.png',
-        [ACTION_ID_DARK_KNIGHT_DARK_MISSIONARY]: 'assets/icons/drk/dark_missionary.png',
-        [ACTION_ID_DARK_KNIGHT_LIVING_DEAD]: 'assets/icons/drk/living_dead.png',
-        [ACTION_ID_DARK_KNIGHT_OBLATION]: 'assets/icons/drk/oblation.png',
-        [ACTION_ID_DARK_KNIGHT_SHADOW_WALL]: 'assets/icons/drk/shadow_wall.png',
-        [ACTION_ID_PALADIN_BULWARK]: 'assets/icons/pld/bulwark.png',
-        [ACTION_ID_PALADIN_HALLOWED_GROUND]: 'assets/icons/pld/hallowed_ground.png',
-        [ACTION_ID_PALADIN_HOLY_SHELTRON]: 'assets/icons/pld/holy_sheltron.png',
-        [ACTION_ID_PALADIN_KNIGHTS_RESOLVE]: 'assets/icons/pld/knights_resolve.png',
-        [ACTION_ID_PALADIN_SENTINEL]: 'assets/icons/pld/sentinel.png',
-        [ACTION_ID_WARRIOR_BLOODWHETTING]: 'assets/icons/war/bloodwhetting.png',
-        [ACTION_ID_WARRIOR_HOLMGANG]: 'assets/icons/war/holmgang.png',
-        [ACTION_ID_WARRIOR_STEM_THE_FLOW]: 'assets/icons/war/stem_the_flow.png',
-        [ACTION_ID_WARRIOR_VULNERABILITY_DOWN]: 'assets/icons/war/vulnerability_down.png',
-        [ACTION_ID_WHITEMAGE_AQUAVEIL]: 'assets/icons/whm/aquaveil.png',
-        [ACTION_ID_WHITEMAGE_TEMPERANCE]: 'assets/icons/whm/temperance.png',
-        [ACTION_ID_SCHOLAR_SACRED_SOIL]: 'assets/icons/sch/sacred_soil.png',
-        [ACTION_ID_ASTROLOGIAN_COLLECTIVE_UNCONSCIOUS]: 'assets/icons/ast/collective_unconscious.png',
-        [ACTION_ID_ASTROLOGIAN_EXALTATION]: 'assets/icons/ast/exaltation.png',
-        [ACTION_ID_SAGE_HOLOS]: 'assets/icons/sge/holos.png',
-        [ACTION_ID_SAGE_KERACHOLE]: 'assets/icons/sge/kerachole.png',
-        [ACTION_ID_SAGE_TAUROCHOLE]: 'assets/icons/sge/taurochole.png'
-      };
+      const activeMitigation = {};
 
       addOverlayListener(eventType, (data) => {
         const messageType = data.line[0];
@@ -310,8 +405,9 @@
               }
               const gainedEffectActionId = messageGainedEffect.actionId;
               const gainedEffectTargetName = messageGainedEffect.targetName;
-              if(characterName !== null && gainedEffectTargetName === characterName && actionIds.includes(gainedEffectActionId)){
-                createProgressBar(gainedEffectActionId, messageGainedEffect.duration);
+              if(characterName !== null && gainedEffectTargetName === characterName && ACTION_IDS.includes(gainedEffectActionId)){
+                addMitigation(gainedEffectActionId, messageGainedEffect.duration);
+                //createProgressBar(gainedEffectActionId, messageGainedEffect.duration);
               }
               break;
             case MESSAGE_TYPE_LOSE_EFFECT:
@@ -325,8 +421,8 @@
               }
               const lostEffectActionId = messageLostEffect.actionId;
               const lostEffectTargetName = messageLostEffect.targetName;
-              if(characterName !== null && lostEffectTargetName === characterName && actionIds.includes(lostEffectActionId)){
-                deleteProgressBarByActionId(lostEffectActionId, messageLostEffect.duration);
+              if(characterName !== null && lostEffectTargetName === characterName && ACTION_IDS.includes(lostEffectActionId)){
+                removeMitigationById(lostEffectActionId);
               }
               
               break;
@@ -338,6 +434,33 @@
         characterName = data.charName;
       });
       startOverlayEvents();
+
+      function addMitigation(id, duration){
+        activeMitigation[id] = ACTIONS_BY_ID[id];
+        createProgressBar(id, duration);
+        updatePercentMit();
+      }
+
+      function removeMitigationById(id){
+        delete activeMitigation[id];
+        deleteProgressBarByActionId(id);
+        updatePercentMit();
+      }
+
+      function updatePercentMit(){
+        let currentMit = 0;
+        Object.keys(activeMitigation).forEach(actionId => {
+          currentMit += (1 - currentMit) * ACTIONS_BY_ID[actionId].percentage;
+        });
+        console.log(currentMit);
+        if(currentMit){
+          console.log('set innerhtml');
+          percentMit.innerHTML = Math.round(currentMit * 100) + '%';
+        }
+        else{
+          percentMit.innerHTML = '';
+        }
+      }
 
       function getProgressBarDashSize(){
         return Math.round(main.getBoundingClientRect().height);
@@ -369,6 +492,8 @@
         const wrapperId = 'wrapper-' + id;
         const dashSize = getProgressBarDashSize();
         const ns = 'http://www.w3.org/2000/svg';
+        const action = ACTIONS_BY_ID[id];
+        const timestamp = new Date().toISOString();
 
         deleteProgressBarByActionId(id);
 
@@ -387,10 +512,11 @@
         svg.setAttribute('viewBox', '0 0 70 266');
 
         const progressBar = document.createElementNS(ns, 'path');
+        progressBar.dataset.timestamp = timestamp;
         progressBar.setAttribute('id', progressBarId);
         progressBar.setAttribute('vector-effect', 'non-scaling-stroke');
         progressBar.setAttribute('fill', 'none');
-        progressBar.setAttribute('stroke', ACTION_ID_COLOR_MAP[id] ? ACTION_ID_COLOR_MAP[id] : '#ffffff');
+        progressBar.setAttribute('stroke', action.color ? action.color : '#ffffff');
         progressBar.setAttribute('stroke-width', '10');
         progressBar.setAttribute('stroke-linecap', 'round');
         progressBar.setAttribute('stroke-dasharray', dashSize);
@@ -426,9 +552,9 @@
         iconWrapper.style.textAlign = 'center';
         wrapper.appendChild(iconWrapper);
 
-        if(ACTION_ID_ICON_MAP[id]){
+        if(action.icon){
           const icon = document.createElement('img');
-          icon.src = ACTION_ID_ICON_MAP[id];
+          icon.src = action.icon;
           icon.style.height = '30px';
           icon.style.width = '30px';
           icon.style.display = 'block';
@@ -465,7 +591,8 @@
         // TODO this should be replaced? work with? MESSAGE_TYPE_LOSE_EFFECT
         // Remove bar if timer expires
         setTimeout(function(){
-          if(progressBar){
+          let timeoutProgressBar = document.getElementById(progressBarId);
+          if(timeoutProgressBar && timeoutProgressBar.dataset.timestamp === timestamp){
             if(timeRemainingInterval){
               clearInterval(timeRemainingInterval);
             }
@@ -474,7 +601,7 @@
                 progressBars.splice(index, 1);
               }
             });
-            wrapper.remove();
+            removeMitigationById(action.id);
           }
         }, duration * 1000);
 
