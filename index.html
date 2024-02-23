@@ -294,11 +294,19 @@
         },
         // Paladin
         {
+          name: 'Arm\'s Up',
+          id: '498',
+          color: '#7970f7',
+          icon: 'assets/icons/pld/passage_of_arms.png',
+          percentage: .15
+        },
+        {
           name: 'Bulwark',
           id: '4D',
           color: '#91edff',
           icon: 'assets/icons/pld/bulwark.png',
-          percentage: .2
+          percentage: .2,
+          blocking: true
         },
         {
           name: 'Hallowed Ground',
@@ -320,6 +328,14 @@
           color: '#0a3c3d',
           icon: 'assets/icons/pld/knights_resolve.png',
           percentage: .15
+        },
+        {
+          name: 'Passage of Arms',
+          id: '497',
+          color: '#7970f7',
+          icon: 'assets/icons/pld/passage_of_arms.png',
+          percentage: .2,
+          blocking: true
         },
         {
           name: 'Sentinel',
@@ -500,10 +516,27 @@
 
       function updatePercentMit(){
         let currentMit = 0;
+
+        // Loop over all active mitigation and add mits together
+        // Block doesn't stack
+        let blocking = false;
         Object.keys(activeMitigation).forEach(actionId => {
-          currentMit += (1 - currentMit) * ACTIONS_BY_ID[actionId].percentage;
+          const action = ACTIONS_BY_ID[actionId];
+          if(!action.blocking || !blocking){
+            currentMit += (1 - currentMit) * action.percentage;
+            if(action.blocking){
+              blocking = true;
+            }
+          }
         });
         currentMit = Math.round(currentMit * 100);
+
+        // Update display
+        // Color based on % breakpoints
+        // red >= 60
+        // yellow >= 40
+        // green >= 20
+        // white
         if(currentMit){
           percentMit.innerHTML = currentMit + '%';
           percentMit.classList.remove('percentMitRed');
